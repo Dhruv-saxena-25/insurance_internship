@@ -5,8 +5,7 @@ DATABASE_NAME = "internship"
 
 COLLECTION_NAME = "insurance_data"
 
-MONGODB_URL_KEY =  "MONGODB_URL" #"mongodb+srv://dhruv:DHRUV@cluster0.clcbsrx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0" 
-
+MONGODB_URL_KEY =  "MONGODB_URL" 
 PIPELINE_NAME: str = "insurance"
 ARTIFACT_DIR: str= "artifacts"
 
