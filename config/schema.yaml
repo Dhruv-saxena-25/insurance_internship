@@ -1,0 +1,22 @@
+
+columns:
+  - age: int 
+  - sex: category
+  - bmi: float
+  - children: int
+  - smoker: category
+  - region: category
+  - expenses: float
+
+numerical_columns:
+  - age
+  - bmi
+  - children
+  - expenses
+
+categorical_columns:
+  - sex
+  - smoker
+  - region
+
+# for data transformation
