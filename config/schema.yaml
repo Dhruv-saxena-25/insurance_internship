@@ -20,3 +20,13 @@ categorical_columns:
   - region
 
 # for data transformation
+num_features:
+  - age
+  - bmi
+  - children
+
+oh_columns:
+  - sex
+  - smoker
+  - region
+  
