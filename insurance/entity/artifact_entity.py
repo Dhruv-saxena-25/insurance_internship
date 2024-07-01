@@ -30,3 +30,13 @@ class RegressionMetricArtifact:
 class ModelTrainerArtifact:
     trained_model_file_path:str 
     metric_artifact:RegressionMetricArtifact 
+
+@dataclass
+class ModelEvaluationArtifact:
+    is_model_accepted: bool 
+
+
+@dataclass
+class ModelPusherArtifacts:
+    bucket_name: str
+    

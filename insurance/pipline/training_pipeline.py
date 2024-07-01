@@ -7,18 +7,24 @@ from insurance.components.data_ingestion import DataIngestion
 from insurance.components.data_validation import DataValidation
 from insurance.components.data_transformation import DataTransformation
 from insurance.components.model_trainer import ModelTrainer
-
+from insurance.components.model_evaluation import ModelEvaluation
+from insurance.components.model_pusher import ModelPusher
 
 
 from insurance.entity.config_entity import (DataIngestionConfig,
                                             DataValidationConfig,
                                             DataTransformationConfig,
-                                            ModelTrainerConfig)
+                                            ModelTrainerConfig,
+                                            ModelEvaluationConfig,
+                                            ModelPusherConfig)
 
 from insurance.entity.artifact_entity import (DataIngestionArtifact,
                                               DataValidationArtifact,
                                               DataTransformationArtifact,
-                                              ModelTrainerArtifact)
+                                              ModelTrainerArtifact,
+                                              ModelEvaluationArtifact,
+                                              ModelPusherArtifacts)
+
 
 class TrainPipeline:
     def __init__(self):
@@ -26,7 +32,8 @@ class TrainPipeline:
         self.data_validation_config = DataValidationConfig()
         self.data_transformation_config = DataTransformationConfig()
         self.model_trainer_config = ModelTrainerConfig()
-
+        self.model_evaluation_config = ModelEvaluationConfig()
+        self.model_pusher_config = ModelPusherConfig()
 
     def start_data_ingestion(self)-> DataIngestionArtifact:
         
@@ -85,6 +92,33 @@ class TrainPipeline:
             return model_trainer_artifact
         except Exception as e:
             raise InsuranceException(e, sys) from e
+        
+    def start_model_evaluation(self, data_ingestion_artifact: DataIngestionArtifact,
+                               model_trainer_artifact: ModelTrainerArtifact,
+                               #data_transformation_artifact = DataTransformationArtifact
+                               ) -> ModelEvaluationArtifact:
+        try:
+            model_evaluation = ModelEvaluation(model_evaluation_config=self.model_evaluation_config,
+                                               data_ingestion_artifact=data_ingestion_artifact,
+                                               #data_transformation_artifact =data_transformation_artifact,
+                                               model_trainer_artifact=model_trainer_artifact)
+            model_evaluation_artifact = model_evaluation.initiate_model_evaluation()
+            return model_evaluation_artifact
+
+        except Exception as e:
+            raise InsuranceException(e, sys) from e
+        
+    def start_model_pusher(self) -> ModelPusherArtifacts:
+
+        try:
+            model_pusher = ModelPusher(
+                model_pusher_config=self.model_pusher_config)
+            model_pusher_artifact = model_pusher.initiate_model_pusher()
+            logging.info("Initiated the model pusher")
+            logging.info("Exited the start_model_pusher method of TrainPipeline class")
+            return model_pusher_artifact
+        except Exception as e:
+            raise InsuranceException(e, sys) from e
 
     def run_pipeline(self,) -> None:
         try:
@@ -93,5 +127,11 @@ class TrainPipeline:
             data_transformation_artifact = self.start_data_transformation(
                 data_ingestion_artifact=data_ingestion_artifact, data_validation_artifact=data_validation_artifact)
             model_trainer_artifact = self.start_model_trainer(data_transformation_artifact=data_transformation_artifact)
+            model_evaluation_artifact = self.start_model_evaluation(data_ingestion_artifact=data_ingestion_artifact,
+                                                                    model_trainer_artifact=model_trainer_artifact)
+            if not model_evaluation_artifact.is_model_accepted:
+                raise Exception("Trained model is not better than the best model")
+            model_pusher_artifacts = self.start_model_pusher()
+
         except Exception as e:
             raise InsuranceException(e, sys) from  e

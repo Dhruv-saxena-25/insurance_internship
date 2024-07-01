@@ -20,6 +20,7 @@ TRAIN_FILE_NAME: str = "train.csv"
 TEST_FILE_NAME: str = "test.csv"
 SCHEMA_FILE_PATH = os.path.join("config", "schema.yaml")
 
+BUCKET_NAME = "insurance-internship"
 
 AWS_ACCESS_KEY_ID_ENV_KEY = "AWS_ACCESS_KEY_ID"
 AWS_SECRET_ACCESS_KEY_ENV_KEY = "AWS_SECRET_ACCESS_KEY"
@@ -60,4 +61,18 @@ MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.pkl"
 MODEL_TRAINER_EXPECTED_R2_SCORE: float = 0.80
 MODEL_TRAINER_MODEL_CONFIG_FILE_PATH: str = os.path.join("config", "model.yaml")
 
+
+
+"""
+MODEL EVALUATION related constant start with MODEL_TRAINER var name
+"""
+
+MODEL_EVALUATION_ARTIFACTS_DIR = "model_evaluation"
+BEST_MODEL_DIR = "best_model"
+MODEL_NAME = "model.pkl"
+
+
+# Flask Constants 
+APP_HOST = "0.0.0.0"
+APP_PORT = 8080
 

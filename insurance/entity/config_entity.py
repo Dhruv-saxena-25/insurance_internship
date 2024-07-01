@@ -48,3 +48,19 @@ class ModelTrainerConfig:
     trained_model_file_path: str = os.path.join(model_trainer_dir, MODEL_TRAINER_TRAINED_MODEL_DIR, MODEL_FILE_NAME)
     expected_r2_score: float = MODEL_TRAINER_EXPECTED_R2_SCORE
     model_config_file_path: str = MODEL_TRAINER_MODEL_CONFIG_FILE_PATH   
+
+
+@dataclass
+class ModelEvaluationConfig:
+    model_evaluation_dir: str = os.path.join(training_pipeline_config.artifact_dir, MODEL_EVALUATION_ARTIFACTS_DIR) 
+    best_model_dir: str = os.path.join(model_evaluation_dir, BEST_MODEL_DIR)
+    bucket_name: str = BUCKET_NAME
+    model_name: str = MODEL_NAME
+
+
+@dataclass
+class ModelPusherConfig:
+    trained_model_path = os.path.join(training_pipeline_config.artifact_dir, MODEL_TRAINER_DIR_NAME, MODEL_TRAINER_TRAINED_MODEL_DIR)
+    bucket_name: str = BUCKET_NAME
+    model_name: str = MODEL_NAME
+    
