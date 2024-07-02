@@ -8,7 +8,7 @@ from pandas import DataFrame
 
 from insurance.exception import InsuranceException
 from insurance.logger import logging
-
+from insurance.constants import *
 
 def read_yaml_file(file_path: str) -> dict:
     try:
@@ -103,5 +103,16 @@ def drop_columns(df: DataFrame, cols: list)-> DataFrame:
         logging.info("Exited the drop_columns method of utils")
         
         return df
+    except Exception as e:
+        raise InsuranceException(e, sys) from e
+    
+def get_preprocessor_path(dir =ARTIFACT_DIR, t_dir = DATA_TRANSFORMATION_DIR_NAME, f_dir = DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR) -> str:
+    try:
+        timestamps= list(map(int, os.listdir(dir)))
+        latest_timestamp= str(max(timestamps))
+        latest_timestamp= '0'+latest_timestamp[0:1]+ '_'+ latest_timestamp[1:3] + '_' + latest_timestamp[3:7] + '_' + latest_timestamp[7:9] + '_' + latest_timestamp[9:11] + '_' + latest_timestamp[11:]
+        latest_preprocessor_path= os.path.join(dir, f'{latest_timestamp}', t_dir, f_dir, PREPROCSSING_OBJECT_FILE_NAME)
+        latest_timestamp= str(latest_timestamp).replace('\\','\\\\')
+        return latest_preprocessor_path
     except Exception as e:
         raise InsuranceException(e, sys) from e
