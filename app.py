@@ -15,7 +15,7 @@ def show_predict_page():
 	 text-align:center;">{"Welcome To Insurance Premium Predator APP"}</h1>''', unsafe_allow_html=True)
 
 	# Creating form field
-	with st.form('form',clear_on_submit=False):
+	with st.form('form',clear_on_submit=True):
 		age = st.text_input('Age',placeholder='Age')
 		sex = st.selectbox("Sex",('Male','Female'), placeholder= 'Sex')
 		bmi = st.text_input('Bmi',placeholder='Bmi')
