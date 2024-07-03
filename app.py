@@ -20,7 +20,7 @@ def show_predict_page():
 		sex = st.selectbox("Sex",('Male','Female'), placeholder= 'Sex')
 		bmi = st.text_input('Bmi',placeholder='Bmi')
 		children = st.text_input('Children', placeholder='Number of Children')
-		smoker = st.selectbox('Smoker',('Yes','No'), placeholder= 'Smoker')
+		smoker = st.selectbox('Smoker',('Yes','No'), placeholder="Choose an option",)
 		reg = ('Northeast','Northwest','Southeast','Southwest')
 		region = st.selectbox('Region',reg, placeholder= 'Region')
 
