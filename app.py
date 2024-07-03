@@ -1,45 +1,44 @@
-from flask import Flask, request, render_template
-import numpy as np
-import pandas as pd
-from flask_cors import CORS, cross_origin
+
 from insurance.pipline.prediction_pipeline import PredictionPipeline
-from insurance.constants import *
-from insurance.utils.main_utils import CustomData
 
-application=Flask(__name__)
-CORS(application)
-app=application
+import numpy as np
+import pandas as pd 
+import pickle
+import streamlit as st
 
-@app.route("/", methods=['GET'])
-@cross_origin()
+st.set_page_config(layout="wide")
 
 
+def show_predict_page():
+	
+	st.markdown(f'''<h1 style="color:white;font-size:35px;
+	 text-align:center;">{"Welcome To Insurance Premium Predator"}</h1>''', unsafe_allow_html=True)
 
-def home():
-    
-    return render_template('home.html')
+	# Creating form field
+	with st.form('form',clear_on_submit=True):
+		age = st.text_input('Age',placeholder='Age')
+		sex = st.selectbox("Sex",['Male','Female'])
+		bmi = st.text_input('Bmi',placeholder='Bmi')
+		children = st.text_input('Children',placeholder='Number of Children')
+		smoker = st.selectbox('Smoker',['Yes','No'])
+		reg = ['Northeast','Northwest','Southeast','Southwest']
+		region = st.selectbox('Region',reg)
 
-app.route('/predict',methods=['GET', 'POST'])
-def predictRoute():
+		st.markdown(""" <style> div.stButton > button:first-child {background-color:green;
+			width:600px;color:white; margin: 0 auto; display: block;} </style>""", unsafe_allow_html=True)
 
-    if request.method == 'GET':
-        return render_template('home.html')
-    else:
-        data = CustomData(
-            age= request.form.get('age'),
-            sex= request.form.get('sex'),
-            bmi= request.form.get('bmi'),
-            children= request.form.get('children'),
-            smoker= request.form.get('smoker'),
-            region= request.form.get('region')
-        )
-        dataframe = data.get_data_as_data_frame()
-        print(dataframe)
+		predict = st.form_submit_button("Predict Premium")
 
-        obj = PredictionPipeline()
-        result = obj.predict(dataframe)
-        return render_template('home.html', results=result)
-    
+		if predict:
 
-if __name__=="__main__":
-    app.run(host=APP_HOST, port= APP_PORT, debug= True)    
+			X = pd.DataFrame([[int(age), sex, float(bmi), int(children), smoker, region]], 
+	                columns=['age', 'sex', 'bmi', 'children', 'smoker', 'region'])
+			print(X)        
+            
+			model = PredictionPipeline()
+			premium = model.predicts(X)
+
+			st.subheader(f'Insurance Premium: ${premium[0]:.2f}')
+
+
+print(show_predict_page())
