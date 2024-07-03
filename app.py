@@ -12,17 +12,17 @@ st.set_page_config(layout="wide")
 def show_predict_page():
 	
 	st.markdown(f'''<h1 style="color:white;font-size:35px;
-	 text-align:center;">{"Welcome To Insurance Premium Predator"}</h1>''', unsafe_allow_html=True)
+	 text-align:center;">{"Welcome To Insurance Premium Predator APP"}</h1>''', unsafe_allow_html=True)
 
 	# Creating form field
-	with st.form('form',clear_on_submit=True):
+	with st.form('form',clear_on_submit=False):
 		age = st.text_input('Age',placeholder='Age')
-		sex = st.selectbox("Sex",['Male','Female'])
+		sex = st.selectbox("Sex",('Male','Female'), placeholder= 'Sex')
 		bmi = st.text_input('Bmi',placeholder='Bmi')
-		children = st.text_input('Children',placeholder='Number of Children')
-		smoker = st.selectbox('Smoker',['Yes','No'])
-		reg = ['Northeast','Northwest','Southeast','Southwest']
-		region = st.selectbox('Region',reg)
+		children = st.text_input('Children', placeholder='Number of Children')
+		smoker = st.selectbox('Smoker',('Yes','No'), placeholder= 'Smoker')
+		reg = ('Northeast','Northwest','Southeast','Southwest')
+		region = st.selectbox('Region',reg, placeholder= 'Region')
 
 		st.markdown(""" <style> div.stButton > button:first-child {background-color:green;
 			width:600px;color:white; margin: 0 auto; display: block;} </style>""", unsafe_allow_html=True)
