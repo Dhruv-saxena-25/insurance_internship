@@ -1,14 +1,10 @@
 import os
 import sys
-import pickle 
-
 from insurance.constants import *
 from insurance.logger import logging
 from insurance.exception import InsuranceException
 from insurance.configuration.gcloud_syncer import GCloudSync
-from insurance.entity.estimator import InsuranceModel
-from insurance.utils.main_utils import get_preprocessor_path, load_object
-import pandas as pd
+from insurance.utils.main_utils import  load_object
 
 
 class PredictionPipeline:
