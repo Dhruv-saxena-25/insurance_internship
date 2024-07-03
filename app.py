@@ -37,6 +37,7 @@ def show_predict_page():
             
 			model = PredictionPipeline()
 			premium = model.predicts(X)
+			print(premium)
 
 			st.subheader(f'Insurance Premium: ${premium[0]:.2f}')
 
