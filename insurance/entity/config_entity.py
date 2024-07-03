@@ -64,3 +64,8 @@ class ModelPusherConfig:
     bucket_name: str = BUCKET_NAME
     model_name: str = MODEL_NAME
     
+
+@dataclass
+class InsurancePredictorConfig:
+    model_file_path: str = MODEL_FILE_NAME
+    model_bucket_name: str = BUCKET_NAME

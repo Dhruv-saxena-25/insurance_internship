@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        background-color: #9a9291;
+        color: white;
+        font-family: Arial, sans-serif;
+      }
+      .login {
+        margin: 0 auto;
+        width: 50%;
+        text-align: center;
+        padding: 20px;
+        background: linear-gradient(
+          to bottom,
+          #DC4525,
+          #EB405C
+        ); /* Changed gradient to light shade yellow */
+        border-radius: 10px;
+        margin-top: 50px; /* Added margin-top to center the box vertically */
+      }
+      .mb-3 {
+        margin-bottom: 15px;
+      }
+      .form-label {
+        display: block;
+        margin-bottom: 5px;
+        color: black;
+      }
+      .form-control {
+        width: 100%;
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.1
+        ); /* Changed background color to light shade yellow */
+        color: black; /* Changed font color to black */
+      }
+      .btn-primary {
+        padding: 10px 20px;
+        border: none;
+        background-color: #dc3545;
+        color: white;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+      h1,
+      h2 {
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login">
+      <form action="/predictRoute" method="post">
+        <h1>
+          <legend>Insurance Premium Prediction</legend>
+        </h1>
+
+        <!-- Enter Your AGE -->
+        <div class="mb-3">
+          <label class="form-label">Enter Your Age</label>
+          <input
+            class="form-control"
+            type="number"
+            name="age"
+            placeholder="Enter your Age"
+            min="1"
+            max="120"/>
+        </div>    
+        <!-- Enter Your SEX -->
+        <div class="mb-3">
+          <label class="form-label">Select Your Gender</label>
+          <select
+            class="form-control"
+            name="sex"
+            placeholder="Enter your Gender"
+            required>
+            <option class="placeholder" selected disabled value="">
+              Select Your Gender
+            </option>
+            <option value="free/reduced">female</option>
+            <option value="standard">male</option>
+          </select>
+        </div>
+        <!-- Enter Your BMI -->
+        <div class="mb-3">
+          <label class="form-label">Enter Your BMI Score</label>
+          <input
+            class="form-control"
+            type="number"
+            name="bmi"
+            placeholder="Enter your BMI"
+            min="10"
+            max="60"/>
+        </div>    
+        <!-- Enter Your Children Number -->
+        <div class="mb-3">
+          <label class="form-label">Enter Number of Children</label>
+          <input
+            class="form-control"
+            type="number"
+            name="children"
+            placeholder="Enter number of children"
+            min="0"
+            max="6"/>
+        </div>    
+        <!-- Enter Weather Your are Smkoer or Not -->
+
+        <div class="mb-3">
+          <label class="form-label">Select Your Smoke Type</label>
+          <select
+            class="form-control"
+            name="smoker"
+            placeholder="Do You Smoke"
+            required>
+            <option class="placeholder" selected disabled value="">
+              Select Your Smoke Type
+            </option>
+            <option value="yes">yes</option>
+            <option value="no">no</option>
+          </select>
+        </div>
+        <!-- Enter Your Region -->
+
+        <div class="mb-3">
+          <label class="form-label">Select Your Region</label>
+          <select
+            class="form-control"
+            name="region"
+            placeholder="Select Your Region"
+            required>
+            <option class="placeholder" selected disabled value="">
+              Select Your Region Type
+            </option>
+            <option value="southwest">southwest</option>
+            <option value="southeast">southeast</option>
+            <option value="northwest">northwest</option>
+            <option value="northeast">northeast</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <input
+            class="btn btn-primary"
+            type="submit"
+            value="Predict your Maths Score"
+            required
+          />
+        </div>
+      </form>
+      <h2>Predicted Insurance Premium is: {{results}}</h2>
+    </div>
+  </body>
+</html>

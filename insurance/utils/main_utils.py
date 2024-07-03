@@ -1,6 +1,6 @@
 import os
 import sys
-
+import pandas as pd
 import numpy as np
 import dill
 import yaml
@@ -116,3 +116,41 @@ def get_preprocessor_path(dir =ARTIFACT_DIR, t_dir = DATA_TRANSFORMATION_DIR_NAM
         return latest_preprocessor_path
     except Exception as e:
         raise InsuranceException(e, sys) from e
+    
+class CustomData:
+    
+    def __init__(self,
+                 age: int,
+                 sex: str,
+                 bmi: float,
+                 children: int,
+                 smoker: str,
+                 region: str):
+        self.age = age
+        self.sex= sex
+        self.bmi= bmi
+        self.children= children
+        self.smoker= smoker
+        self.region= region
+
+    def get_data_as_data_frame(self):
+
+            '''
+            Return all input in the form of Dataframe. 
+            
+            '''
+            try:
+                custom_data_input_dict= {
+                    "age": [self.age],
+                    "sex": [self.sex],
+                    "bmi": [self.bmi],
+                    "children": [self.children],
+                    "smoker": [self.smoker],
+                    "region": [self.region],
+                }
+
+                return pd.DataFrame(custom_data_input_dict)
+
+            except Exception as e:
+                
+                raise InsuranceException(e, sys) from e

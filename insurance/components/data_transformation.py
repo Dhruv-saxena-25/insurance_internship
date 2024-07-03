@@ -5,8 +5,7 @@ import pandas as pd
 
 from sklearn.pipeline import Pipeline
 
-from sklearn.preprocessing import StandardScaler, OneHotEncoder, PowerTransformer
-
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 
 from sklearn.compose import ColumnTransformer
 
@@ -46,19 +45,18 @@ class DataTransformation:
             logging.info("Got numerical cols from schema config")    
             
             numeric_transformer = StandardScaler()
-            oh_transformer = OneHotEncoder()
+            oh_transformer = OneHotEncoder(handle_unknown="ignore")
 
             logging.info("Initialized StandardScaler, OneHotEncoder")
 
             oh_columns = self._schema_config['oh_columns']
             num_features = self._schema_config["num_features"]
-
-            logging.info("Initialize PowerTransformer") ##  is a technique used to make numerical data resemble a Gaussian distribution more closely
-            transform_pipe = Pipeline(steps=[('transformer', PowerTransformer(method='yeo-johnson'))])
-
+        
             preprocessor = ColumnTransformer([
                     ("StandardScaler", numeric_transformer, num_features),
-                    ("OneHotEncoder", oh_transformer, oh_columns)])
+                    ("OneHotEncoder", oh_transformer, oh_columns)
+                    
+                    ])
             
             logging.info("Created preprocessor object from ColumnTransformer")
             logging.info("Exited get_data_transformer_object method of DataTransformation class")
@@ -79,9 +77,11 @@ class DataTransformation:
                 ## Droping Target Column from training set.
                 input_feature_train_df = train_df.drop(columns=[TARGET_COLUMN], axis=1)
                 target_feature_train_final = train_df[TARGET_COLUMN]
-
+                
+                
                 ## Droping Target Column from testing set.
                 input_feature_test_df = test_df.drop(columns=[TARGET_COLUMN], axis=1)
+                
                 target_feature_test_final = test_df[TARGET_COLUMN]
 
                 logging.info("Got train features and test features of Testing dataset")
@@ -89,6 +89,7 @@ class DataTransformation:
 
                 ## Applying Fit data
                 input_feature_train_final = preprocessor.fit_transform(input_feature_train_df)
+               
                 logging.info("Used the preprocessor object to fit transform the train features")
 
 

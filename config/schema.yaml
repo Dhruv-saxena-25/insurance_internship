@@ -23,7 +23,6 @@ categorical_columns:
 num_features:
   - age
   - bmi
-  - children
 
 oh_columns:
   - sex

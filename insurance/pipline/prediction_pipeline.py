@@ -1,26 +1,22 @@
 import os
 import sys
 import pickle 
+
 from insurance.constants import *
 from insurance.logger import logging
 from insurance.exception import InsuranceException
 from insurance.configuration.gcloud_syncer import GCloudSync
-from insurance.components.data_transformation import DataTransformation
-from insurance.entity.config_entity import DataTransformationConfig
-from insurance.entity.artifact_entity import DataIngestionArtifact
-from insurance.entity.config_entity import TrainingPipelineConfig
+from insurance.entity.estimator import InsuranceModel
 from insurance.utils.main_utils import get_preprocessor_path, load_object
+import pandas as pd
 
-training_pipeline_config: TrainingPipelineConfig= TrainingPipelineConfig()
 
 class PredictionPipeline:
     def __init__(self):
         self.bucket_name = BUCKET_NAME
         self.model_name = MODEL_NAME
-        self.model_path = os.path.join(training_pipeline_config.artifact_dir, "PredictedModel")
+        self.model_path = os.path.join("PredictedModel")
         self.gcloud = GCloudSync()
-        self.data_transformation = DataTransformation(data_transformation_config= DataTransformationConfig,
-                                                      data_ingestion_artifacts=DataIngestionArtifact)
 
     def get_model_from_gcloud(self) -> str:
         
@@ -36,29 +32,23 @@ class PredictionPipeline:
         except Exception as e:
             raise InsuranceException(e, sys) from e
         
-    def predict(self,features):
+    def predicts(self,dataframe) -> float:
+        logging.info("Entered the predict method of PredictionPipeline class")
         try:
+
+            # if self.model_path is not False
             best_model_path = self.get_model_from_gcloud()
-            preprocessor_path = get_preprocessor_path()
-            print(preprocessor_path)
+
             best_model = load_object(file_path= best_model_path)
-            preprocessor = load_object(file_path=preprocessor_path)
             
-            print("After Loading")
-            data_scaled= preprocessor.transform(features)
-            preds= best_model.predict(data_scaled)
-            return preds
-
-        except Exception as e:
-            raise InsuranceException(e, sys) from e 
-        
-
-    def run_pipeline(self, features):
-        logging.info("Entered the run_pipeline method of PredictionPipeline class")
-        try:
-            pred_result = self.predict(features)
-            logging.info("Exited the run_pipeline method of PredictionPipeline class")
-            return pred_result
+            print("After Loading Best Model")
+            
+            expenses= best_model.predict(dataframe)
+            
+            logging.info("Exited the predict method of PredictionPipeline class")
+            return  expenses  
+            
+            
         except Exception as e:
             raise InsuranceException(e, sys) from e 
         
